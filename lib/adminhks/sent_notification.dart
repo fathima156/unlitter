@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Add 'intl' to your pubspec.yaml
+import 'package:intl/intl.dart';
 
 class SendNotificationPage extends StatefulWidget {
   const SendNotificationPage({super.key});
@@ -11,7 +11,7 @@ class SendNotificationPage extends StatefulWidget {
 class _SendNotificationPageState extends State<SendNotificationPage> {
   final TextEditingController _specController = TextEditingController();
   DateTime? _selectedDate;
-  String _selectedWard = 'Ward 1'; // Default value
+  String _selectedWard = 'Ward 1';
 
   final List<String> _wards = [
     'Ward 1',
