@@ -1,176 +1,163 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class PaymentStatusPage extends StatefulWidget {
-  const PaymentStatusPage({super.key});
+class HouseFinancePage extends StatefulWidget {
+  const HouseFinancePage({super.key});
 
   @override
-  State<PaymentStatusPage> createState() => _PaymentStatusPageState();
+  State<HouseFinancePage> createState() => _HouseFinancePageState();
 }
 
-class _PaymentStatusPageState extends State<PaymentStatusPage> {
-  // Mock Data: to Replace with firebase stream later
-  final List<Map<String, dynamic>> _allRecords = [
-    {
-      'house': 'H-101',
-      'name': 'Adarsh',
-      'ward': 'Ward 1',
-      'status': 'Paid',
-      'month': 'January',
-      'date': '12-01-2026',
-    },
-    {
-      'house': 'H-102',
-      'name': 'Binu',
-      'ward': 'Ward 2',
-      'status': 'Unpaid',
-      'month': 'January',
-      'date': '-',
-    },
-    {
-      'house': 'H-205',
-      'name': 'Chitra',
-      'ward': 'Ward 1',
-      'status': 'Paid',
-      'month': 'February',
-      'date': '05-02-2026',
-    },
-  ];
-
+class _HouseFinancePageState extends State<HouseFinancePage> {
+  // Filters
   String _selectedWard = 'All';
-  String _selectedMonth = 'All';
-  String _searchQuery = "";
+  String _selectedMonth = DateFormat('MMMM').format(DateTime.now());
 
-  final List<String> _wards = [
-    'All',
-    'Ward 1',
-    'Ward 2',
-    'Ward 3',
-    'Ward 4',
-    'Ward 5',
-  ];
+  final List<String> _wards = ['All', 'Ward 1', 'Ward 2', 'Ward 3', 'Ward 4'];
   final List<String> _months = [
-    'All',
     'January',
     'February',
     'March',
     'April',
     'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
+
+  // Mock Data
+  final List<Map<String, dynamic>> _allData = [
+    {
+      'house': '101',
+      'name': 'Adarsh',
+      'ward': 'Ward 1',
+      'month': 'February',
+      'status': 'Paid',
+      'date': '10-02-2026',
+    },
+    {
+      'house': '202',
+      'name': 'Binu',
+      'ward': 'Ward 2',
+      'month': 'February',
+      'status': 'Unpaid',
+      'date': '-',
+    },
+    {
+      'house': '105',
+      'name': 'Chitra',
+      'ward': 'Ward 1',
+      'month': 'January',
+      'status': 'Paid',
+      'date': '15-01-2026',
+    },
+  ];
+
+  void _addNewDetails() {
+    // Logic to open a dialog or navigate to your 'Register User' or 'Add Payment' form
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Redirecting to Entry Form...")),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Logic to filter the list based on werd, ,month, and search Query
-    List<Map<String, dynamic>> filteredRecords = _allRecords.where((record) {
-      bool matchesWard =
-          _selectedWard == 'All' || record['ward'] == _selectedWard;
-      bool matchesMonth =
-          _selectedMonth == 'All' || record['month'] == _selectedMonth;
-      bool matchesSearch =
-          record['name'].toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          record['house'].contains(_searchQuery);
-      return matchesWard && matchesMonth && matchesSearch;
+    // Filter Logic
+    List<Map<String, dynamic>> filteredList = _allData.where((item) {
+      bool wardMatch = _selectedWard == 'All' || item['ward'] == _selectedWard;
+      bool monthMatch = item['month'] == _selectedMonth;
+      return wardMatch && monthMatch;
     }).toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Payment Status"),
+        title: const Text("Finance & Status"),
         backgroundColor: Colors.green,
       ),
       body: Column(
         children: [
-          // 1. Search and Filter Header
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
+          // FILTER SECTION
+          Container(
+            padding: const EdgeInsets.all(10),
+            color: Colors.green[50],
+            child: Row(
               children: [
-                TextField(
-                  onChanged: (val) => setState(() => _searchQuery = val),
-                  decoration: const InputDecoration(
-                    hintText: "Search by Name or House No...",
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
+                Expanded(
+                  child: DropdownButton<String>(
+                    value: _selectedWard,
+                    isExpanded: true,
+                    items: _wards
+                        .map((w) => DropdownMenuItem(value: w, child: Text(w)))
+                        .toList(),
+                    onChanged: (val) => setState(() => _selectedWard = val!),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        value: _selectedWard,
-                        decoration: const InputDecoration(labelText: "Ward"),
-                        items: _wards
-                            .map(
-                              (w) => DropdownMenuItem(value: w, child: Text(w)),
-                            )
-                            .toList(),
-                        onChanged: (val) =>
-                            setState(() => _selectedWard = val!),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        value: _selectedMonth,
-                        decoration: const InputDecoration(labelText: "Month"),
-                        items: _months
-                            .map(
-                              (m) => DropdownMenuItem(value: m, child: Text(m)),
-                            )
-                            .toList(),
-                        onChanged: (val) =>
-                            setState(() => _selectedMonth = val!),
-                      ),
-                    ),
-                  ],
+                const SizedBox(width: 10),
+                Expanded(
+                  child: DropdownButton<String>(
+                    value: _selectedMonth,
+                    isExpanded: true,
+                    items: _months
+                        .map((m) => DropdownMenuItem(value: m, child: Text(m)))
+                        .toList(),
+                    onChanged: (val) => setState(() => _selectedMonth = val!),
+                  ),
                 ),
               ],
             ),
           ),
 
-          // 2. Data Table
+          // LIST SECTION
           Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  columns: const [
-                    DataColumn(label: Text('House / Name')),
-                    DataColumn(label: Text('Month')),
-                    DataColumn(label: Text('Status')),
-                    DataColumn(label: Text('Date Paid')),
-                  ],
-                  rows: filteredRecords
-                      .map(
-                        (record) => DataRow(
-                          cells: [
-                            DataCell(
-                              Text(
-                                "${record['house']}\n${record['name']}",
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            ),
-                            DataCell(Text(record['month'])),
-                            DataCell(
-                              Icon(
-                                record['status'] == 'Paid'
-                                    ? Icons.check_circle
-                                    : Icons.cancel,
-                                color: record['status'] == 'Paid'
-                                    ? Colors.green
-                                    : Colors.red,
-                              ),
-                            ),
-                            DataCell(Text(record['date'])),
-                          ],
+            child: filteredList.isEmpty
+                ? const Center(
+                    child: Text("No records found for this selection"),
+                  )
+                : ListView.builder(
+                    itemCount: filteredList.length,
+                    itemBuilder: (context, index) {
+                      final item = filteredList[index];
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
                         ),
-                      )
-                      .toList(),
-                ),
-              ),
-            ),
+                        child: ListTile(
+                          leading: CircleAvatar(child: Text(item['house'])),
+                          title: Text("${item['name']} (${item['house']})"),
+                          subtitle: Text("Date: ${item['date']}"),
+                          trailing: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: item['status'] == 'Paid'
+                                  ? Colors.green[100]
+                                  : Colors.red[100],
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Text(
+                              item['status'],
+                              style: TextStyle(
+                                color: item['status'] == 'Paid'
+                                    ? Colors.green[900]
+                                    : Colors.red[900],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addNewDetails,
+        backgroundColor: Colors.green,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
