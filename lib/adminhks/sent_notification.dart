@@ -33,18 +33,25 @@ class _SendNotificationPageState extends State<SendNotificationPage> {
   }
 
   void _sendNotification() {
-    // This is where you will trigger the Firebase FCM logic later
-    String dateStr = _selectedDate != null
+    // 1. CAPTURE CURRENT DATE/TIME OF THE ACTION
+    DateTime now = DateTime.now();
+    String sentAtDate = DateFormat('dd-MM-yyyy').format(now);
+    String sentAtTime = DateFormat('hh:mm a').format(now);
+
+    // 2. GET THE SCHEDULED PICKUP DATE
+    String pickupDate = _selectedDate != null
         ? DateFormat('dd-MM-yyyy').format(_selectedDate!)
         : 'Not set';
 
-    print("Sending to: $_selectedWard");
-    print("Date: $dateStr");
-    print("Details: ${_specController.text}");
+    // 3. CONSOLIDATE DATA FOR FIREBASE/UI
+    print("Action: Notification Sent at $sentAtDate at $sentAtTime");
+    print("Target: $_selectedWard");
+    print("Scheduled Pickup: $pickupDate");
+    print("Waste Type: ${_specController.text}");
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text("Notification Broadcasted!")));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Broadcast sent to $_selectedWard!")),
+    );
   }
 
   @override
