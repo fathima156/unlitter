@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class SendNotificationPage extends StatefulWidget {
-  const SendNotificationPage({super.key});
+class SentNotificationPage extends StatefulWidget {
+  const SentNotificationPage({super.key});
 
   @override
-  State<SendNotificationPage> createState() => _SendNotificationPageState();
+  State<SentNotificationPage> createState() => _SendNotificationPageState();
 }
 
-class _SendNotificationPageState extends State<SendNotificationPage> {
+class _SendNotificationPageState extends State<SentNotificationPage> {
   final TextEditingController _specController = TextEditingController();
   DateTime? _selectedDate;
   String _selectedWard = 'Ward 1';
