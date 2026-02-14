@@ -44,10 +44,10 @@ class _SendNotificationPageState extends State<SentNotificationPage> {
         : 'Not set';
 
     // 3. CONSOLIDATE DATA FOR FIREBASE/UI
-    print("Action: Notification Sent at $sentAtDate at $sentAtTime");
-    print("Target: $_selectedWard");
-    print("Scheduled Pickup: $pickupDate");
-    print("Waste Type: ${_specController.text}");
+    debugPrint("Action: Notification Sent at $sentAtDate at $sentAtTime");
+    debugPrint("Target: $_selectedWard");
+    debugPrint("Scheduled Pickup: $pickupDate");
+    debugPrint("Waste Type: ${_specController.text}");
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Broadcast sent to $_selectedWard!")),

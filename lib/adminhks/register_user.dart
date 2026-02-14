@@ -18,8 +18,8 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
 
   void _submitData() {
     // Logic to save this data to Firebase Firestore goes here
-    print("Registering User: ${_nameController.text}");
-    print(
+    debugPrint("Registering User: ${_nameController.text}");
+    debugPrint(
       "Panchayat: ${_panchayatController.text}, Ward: ${_wardController.text}",
     );
 

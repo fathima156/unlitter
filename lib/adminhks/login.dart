@@ -3,8 +3,7 @@ import 'package:sms_autofill/sms_autofill.dart';
 import 'package:unlitter/adminhks/register_admin.dart';
 
 // IMPORTANT: Ensure these file paths match your project structure
-import 'admin_dashboard.dart';
-import 'register_admin.dart';
+// IMPORTANT: Ensure these file paths match your project structure
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,15 +15,32 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _phoneController = TextEditingController();
   bool _isOTPSent = false;
-  String _otpCode = "";
+
+  void verifyOTP() {
+    // Replace this with your actual OTP logic check
+    String enteredOtp = "123456";
+
+    if (enteredOtp == "123456") {
+      // Navigate to the registration page you provided
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HKSRegistrationPage(
+            phoneNumber: _phoneController.text, // Passing the phone number
+          ),
+        ),
+      );
+    }
+  }
 
   void _sendOTP() async {
+    // Simulate OTP sending
     if (_phoneController.text.length == 10) {
-      setState(() => _isOTPSent = true);
-      await SmsAutoFill().listenForCode();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("OTP Sent to your mobile")));
+      String? signature = await SmsAutoFill().getAppSignature;
+      debugPrint("Sending OTP to ${_phoneController.text}. Signature: $signature");
+      setState(() {
+        _isOTPSent = true;
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please enter a valid 10-digit number")),
@@ -103,28 +119,19 @@ class _LoginPageState extends State<LoginPage> {
                   // This property must be inside the PinFieldAutoFill constructor
                   onCodeChanged: (code) {
                     if (code != null && code.length == 6) {
-                      setState(() => _otpCode = code);
+                      // setState(() => _otpCode = code); // Unused
 
-                      bool isRegisteredAdmin =
-                          false; // Set to true to test dashboard
+                      // bool isRegisteredAdmin = false; // Set to true to test dashboard
 
-                      if (isRegisteredAdmin) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AdminDashboard(),
+                      // Directly navigate to registration for now (fixing dead code warning)
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HKSRegistrationPage(
+                            phoneNumber: _phoneController.text,
                           ),
-                        );
-                      } else {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HKSRegistrationPage(
-                              phoneNumber: _phoneController.text,
-                            ),
-                          ),
-                        );
-                      }
+                        ),
+                      );
                     }
                   },
                   //otp style

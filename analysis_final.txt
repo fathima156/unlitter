@@ -1,0 +1,35 @@
+Analyzing unlitter...                                           
+
+   info - Don't invoke 'print' in production code - lib\adminhks\add_status_details.dart:54:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\adminhks\add_status_details.dart:55:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\adminhks\add_status_details.dart:56:5 - avoid_print
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\adminhks\add_status_details.dart:82:15 - deprecated_member_use
+   info - 'groupValue' is deprecated and shouldn't be used. Use a RadioGroup ancestor to manage group value instead. This feature was deprecated after v3.32.0-0.0.pre - lib\adminhks\add_status_details.dart:100:19 - deprecated_member_use
+   info - 'onChanged' is deprecated and shouldn't be used. Use RadioGroup to handle value change instead. This feature was deprecated after v3.32.0-0.0.pre - lib\adminhks\add_status_details.dart:101:19 - deprecated_member_use
+   info - 'groupValue' is deprecated and shouldn't be used. Use a RadioGroup ancestor to manage group value instead. This feature was deprecated after v3.32.0-0.0.pre - lib\adminhks\add_status_details.dart:106:19 - deprecated_member_use
+   info - 'onChanged' is deprecated and shouldn't be used. Use RadioGroup to handle value change instead. This feature was deprecated after v3.32.0-0.0.pre - lib\adminhks\add_status_details.dart:107:19 - deprecated_member_use
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\adminhks\add_status_details.dart:120:15 - deprecated_member_use
+warning - Unused import: 'settings.dart' - lib\adminhks\admin_dashboard.dart:7:8 - unused_import
+warning - Unused import: 'admin_profile.dart' - lib\adminhks\admin_dashboard.dart:8:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\adminhks\admin_dashboard.dart:138:38 - deprecated_member_use
+   info - Don't invoke 'print' in production code - lib\adminhks\concern_page.dart:49:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\adminhks\concern_page.dart:50:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\adminhks\concern_page.dart:51:5 - avoid_print
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\adminhks\concern_page.dart:82:15 - deprecated_member_use
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\adminhks\concern_page.dart:101:15 - deprecated_member_use
+warning - Duplicate import - lib\adminhks\login.dart:7:8 - duplicate_import
+warning - The value of the field '_otpCode' isn't used - lib\adminhks\login.dart:19:10 - unused_field
+   info - Don't invoke 'print' in production code - lib\adminhks\login.dart:42:7 - avoid_print
+warning - Dead code - lib\adminhks\login.dart:129:46 - dead_code
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\adminhks\register_admin.dart:41:17 - deprecated_member_use
+   info - Don't invoke 'print' in production code - lib\adminhks\register_user.dart:21:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\adminhks\register_user.dart:22:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\adminhks\sent_notification.dart:47:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\adminhks\sent_notification.dart:48:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\adminhks\sent_notification.dart:49:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\adminhks\sent_notification.dart:50:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\userhks\login_user.dart:42:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\userhks\login_user.dart:71:5 - avoid_print
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\userhks\review_user.dart:69:15 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\userhks\status_user.dart:122:32 - deprecated_member_use
+

@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
+import 'landing_page.dart';
+import 'adminhks/login.dart';
+import 'adminhks/admin_dashboard.dart';
+import 'userhks/login_user.dart';
+import 'userhks/user_dashboard.dart';
 
-// Admin/Worker Folder Imports
-import 'adminhks/login.dart'; // Admin Login
-import 'adminhks/admin_dashboard.dart'; // Admin Dashboard
-import 'adminhks/register_admin.dart'; // Admin Registration
-
-// User/Household Folder Imports
-import 'userhks/login_user.dart'; // User Login
-import 'userhks/user_dashboard.dart'; // User Dashboard
-import 'userhks/register_user.dart'; // User Registration
-
-void main() {
-  runApp(const UnlitterApp());
-}
+void main() => runApp(const UnlitterApp());
 
 class UnlitterApp extends StatelessWidget {
   const UnlitterApp({super.key});
@@ -26,20 +19,12 @@ class UnlitterApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-
-      // 1. SET THE STARTING PAGE
-      // Change this to LoginUserPage() if you want the app to start for Residents
-      home: const LoginPage(),
-
-      // 2. DEFINE FIXED ROUTES
-      // Only pages that DON'T require extra data (like phone numbers) go here
+      home: const LandingPage(), // Start here
       routes: {
-        // Admin Routes
+        '/landing': (context) => const LandingPage(),
         '/adminLogin': (context) => const LoginPage(),
-        '/adminDashboard': (context) => const AdminDashboard(),
-
-        // User Routes
         '/userLogin': (context) => const UserLoginPage(),
+        '/adminDashboard': (context) => const AdminDashboard(),
         '/userDashboard': (context) => const UserDashboard(),
       },
     );

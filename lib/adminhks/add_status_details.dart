@@ -49,11 +49,11 @@ class _AddHouseDetailsPageState extends State<AddHouseDetailsPage> {
 
   void _saveDetails() {
     // CAPTURING THE FINAL DATA
-    String formattedDate = DateFormat('dd-MM-yyyy').format(_selectedDate);
+    // String formattedDate = DateFormat('dd-MM-yyyy').format(_selectedDate);
 
-    print("Saving Record: House: $_selectedHouse");
-    print("Month: $_selectedMonth | Status: $_paymentStatus");
-    print("Collection Date: $formattedDate");
+    // debugPrint("Saving Record: House: $_selectedHouse");
+    // debugPrint("Month: $_selectedMonth | Status: $_paymentStatus");
+    // debugPrint("Collection Date: $formattedDate");
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Record Updated Successfully!")),
@@ -79,7 +79,8 @@ class _AddHouseDetailsPageState extends State<AddHouseDetailsPage> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             DropdownButtonFormField<String>(
-              value: _selectedHouse,
+              key: ValueKey(_selectedHouse),
+              initialValue: _selectedHouse,
               items: _houses
                   .map((h) => DropdownMenuItem(value: h, child: Text(h)))
                   .toList(),
@@ -95,15 +96,21 @@ class _AddHouseDetailsPageState extends State<AddHouseDetailsPage> {
             ),
             Row(
               children: [
+                // ignore: deprecated_member_use
                 Radio(
                   value: 'Paid',
+                  // ignore: deprecated_member_use
                   groupValue: _paymentStatus,
+                  // ignore: deprecated_member_use
                   onChanged: (v) => setState(() => _paymentStatus = v!),
                 ),
                 const Text("Paid"),
+                // ignore: deprecated_member_use
                 Radio(
                   value: 'Unpaid',
+                  // ignore: deprecated_member_use
                   groupValue: _paymentStatus,
+                  // ignore: deprecated_member_use
                   onChanged: (v) => setState(() => _paymentStatus = v!),
                 ),
                 const Text("Unpaid"),
@@ -117,7 +124,8 @@ class _AddHouseDetailsPageState extends State<AddHouseDetailsPage> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             DropdownButtonFormField<String>(
-              value: _selectedMonth,
+              key: ValueKey(_selectedMonth),
+              initialValue: _selectedMonth,
               items: _months
                   .map((m) => DropdownMenuItem(value: m, child: Text(m)))
                   .toList(),

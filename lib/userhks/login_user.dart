@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import '../adminhks/register_admin.dart';
 
 class UserLoginPage extends StatefulWidget {
   const UserLoginPage({super.key});
@@ -16,14 +17,35 @@ class _UserLoginPageState extends State<UserLoginPage> {
 
   bool _isOTPSent = false;
 
-  void _sendOTP() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() => _isOTPSent = true);
-      // This triggers the listener for the Auto-fill OTP
-      await SmsAutoFill().listenForCode();
+  // Inside your LoginPage State...
+  void verifyOTP() {
+    // Replace this with your actual OTP logic check
+    String enteredOtp = "123456";
 
+    if (enteredOtp == "123456") {
+      // Navigate to the registration page you provided
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HKSRegistrationPage(
+            phoneNumber: _phoneController.text, // Passing the phone number
+          ),
+        ),
+      );
+    }
+  }
+
+  void _sendOTP() async {
+    // Simulate OTP sending
+    if (_phoneController.text.length == 10) {
+      String? signature = await SmsAutoFill().getAppSignature;
+      debugPrint("Sending OTP to ${_phoneController.text}. Signature: $signature");
+      setState(() {
+        _isOTPSent = true;
+      });
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("OTP sent to verified mobile")),
+        const SnackBar(content: Text("Please enter a valid 10-digit number")),
       );
     }
   }
@@ -46,7 +68,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
   void getSignature() async {
     // This prints the hash code to your VS Code / Android Studio console
     String? signature = await SmsAutoFill().getAppSignature;
-    print("Your App Signature is: $signature");
+    debugPrint("Your App Signature is: $signature");
   }
 
   @override

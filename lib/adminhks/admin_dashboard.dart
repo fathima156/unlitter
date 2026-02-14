@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'register_user.dart';
 import 'sent_notification.dart';
-import 'view_status.dart';
+// FIX: Ensure this matches the class name in your first code block
+import 'add_status_details.dart';
 import 'concern_page.dart';
-import 'settings.dart';
-import 'admin_profile.dart';
 
 class AdminDashboard extends StatelessWidget {
   const AdminDashboard({super.key});
@@ -16,38 +15,21 @@ class AdminDashboard extends StatelessWidget {
       appBar: AppBar(
         title: const Text("HKS Admin Panel"),
         backgroundColor: Colors.green[700],
-        elevation: 0,
         actions: [
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RegisterUserPage(),
-                ),
-              );
-            },
-            icon: const Icon(Icons.add_home),
-            label: const Text("Register New House"),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              minimumSize: const Size(double.infinity, 50),
-            ),
-          ),
           IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => Navigator.push(
+            icon: const Icon(Icons.logout),
+            // WORKFLOW FIX: Returns to role selection
+            onPressed: () => Navigator.pushNamedAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const SettingsPage()),
+              '/landing',
+              (r) => false,
             ),
           ),
         ],
       ),
       body: Column(
         children: [
-          // Top Profile Card (Connects to admin_profile.dart)
           _buildHeader(context),
-
           Expanded(
             child: GridView.count(
               padding: const EdgeInsets.all(20),
@@ -69,12 +51,13 @@ class AdminDashboard extends StatelessWidget {
                   Colors.orange,
                   const SentNotificationPage(),
                 ),
+                // FIX: Pointing to the Collection Details page you shared
                 _menuCard(
                   context,
-                  "House Status",
+                  "Update Collection",
                   Icons.fact_check,
                   Colors.green,
-                  const HouseFinancePage(),
+                  const AddHouseDetailsPage(),
                 ),
                 _menuCard(
                   context,
@@ -93,8 +76,7 @@ class AdminDashboard extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(25),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.green[700],
         borderRadius: const BorderRadius.only(
@@ -104,36 +86,29 @@ class AdminDashboard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AdminProfilePage()),
-            ),
-            child: const CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.white,
-              child: Icon(
-                Icons.admin_panel_settings,
-                color: Colors.green,
-                size: 35,
-              ),
-            ),
+          const CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.white,
+            child: Icon(Icons.admin_panel_settings, size: 30, color: Colors.green),
           ),
           const SizedBox(width: 15),
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: const [
               Text(
-                "Secretary, HKS",
+                "Welcome Admin",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 18,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                "Admin ID: #9921",
-                style: TextStyle(color: Colors.white70, fontSize: 14),
+                "Manage your HKS activities",
+                style: TextStyle(
+                  color: Colors.greenAccent,
+                  fontSize: 14,
+                ),
               ),
             ],
           ),
@@ -142,36 +117,34 @@ class AdminDashboard extends StatelessWidget {
     );
   }
 
-  Widget _menuCard(
-    BuildContext context,
-    String title,
-    IconData icon,
-    Color color,
-    Widget target,
-  ) {
-    return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => target),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
+  Widget _menuCard(BuildContext context, String title, IconData icon, Color color, Widget page) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => page),
+          );
+        },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 40, color: color),
+            CircleAvatar(
+              radius: 25,
+              backgroundColor: color.withValues(alpha: 0.1),
+              child: Icon(icon, color: color, size: 30),
+            ),
             const SizedBox(height: 10),
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),

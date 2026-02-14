@@ -66,7 +66,8 @@ class _UserReviewPageState extends State<UserReviewPage> {
             ),
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
-              value: _selectedCategory,
+              key: ValueKey(_selectedCategory),
+              initialValue: _selectedCategory,
               decoration: const InputDecoration(border: OutlineInputBorder()),
               items: _categories.map((String category) {
                 return DropdownMenuItem(value: category, child: Text(category));

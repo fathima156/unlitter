@@ -1,0 +1,8 @@
+Analyzing unlitter...                                           
+
+warning - The value of the local variable 'formattedDate' isn't used - lib\adminhks\add_status_details.dart:52:12 - unused_local_variable
+warning - The value of the local variable 'timestamp' isn't used - lib\adminhks\concern_page.dart:45:12 - unused_local_variable
+  error - Undefined name '_otpCode' - lib\adminhks\login.dart:122:38 - undefined_identifier
+warning - Dead code - lib\adminhks\login.dart:127:46 - dead_code
+   info - Don't invoke 'print' in production code - lib\userhks\login_user.dart:71:5 - avoid_print
+

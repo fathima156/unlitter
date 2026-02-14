@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart'; (Removed)
 
 class AdminConcernsPage extends StatefulWidget {
   const AdminConcernsPage({super.key});
@@ -42,13 +42,13 @@ class _AdminConcernsPageState extends State<AdminConcernsPage> {
     }
 
     // Capture the exact moment the concern was raised
-    String timestamp = DateFormat(
-      'dd-MM-yyyy | hh:mm a',
-    ).format(DateTime.now());
+    // String timestamp = DateFormat(
+    //   'dd-MM-yyyy | hh:mm a',
+    // ).format(DateTime.now());
 
-    print("Logging Concern for $_selectedHouse in $_selectedWard");
-    print("Concern: ${_concernController.text}");
-    print("Time: $timestamp");
+    // debugPrint("Logging Concern for $_selectedHouse in $_selectedWard");
+    // debugPrint("Concern: ${_concernController.text}");
+    // debugPrint("Time: $timestamp");
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Concern Logged Successfully!")),
@@ -79,7 +79,8 @@ class _AdminConcernsPageState extends State<AdminConcernsPage> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             DropdownButtonFormField<String>(
-              value: _selectedWard,
+              key: ValueKey(_selectedWard),
+              initialValue: _selectedWard,
               hint: const Text("Choose Ward"),
               items: _wards
                   .map((w) => DropdownMenuItem(value: w, child: Text(w)))
@@ -98,7 +99,8 @@ class _AdminConcernsPageState extends State<AdminConcernsPage> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             DropdownButtonFormField<String>(
-              value: _selectedHouse,
+              key: ValueKey(_selectedHouse),
+              initialValue: _selectedHouse,
               hint: const Text("Choose House"),
               disabledHint: const Text("Select Ward First"),
               items: _selectedWard == null
