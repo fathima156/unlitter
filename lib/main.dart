@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:unlitter/adminhks/register_user.dart';
 //import 'package:firebase_core/firebase_core.dart';
-import 'adminhks/register_admin.dart'; // We will link your forms here later
+// import 'adminhks/register_admin.dart'; // We will link your forms here later
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +29,7 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // While testing, just return the page you are working on!
-    return const HKSRegistrationPage();
+    return const RegisterUserPage();
   }
 }
 
