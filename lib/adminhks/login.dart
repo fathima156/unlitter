@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sms_autofill/sms_autofill.dart';
-// IMPORTANT: Import your dashboard file here
+import 'package:unlitter/adminhks/register_admin.dart';
+
+// IMPORTANT: Ensure these file paths match your project structure
 import 'admin_dashboard.dart';
+import 'register_admin.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -42,84 +45,106 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.recycling, size: 80, color: Colors.green),
-            const SizedBox(height: 10),
-            const Text(
-              "Haritha Karma Sena",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
-              ),
-            ),
-            const SizedBox(height: 40),
-
-            // --- PHONE INPUT SECTION ---
-            if (!_isOTPSent) ...[
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 80),
+              const Icon(Icons.recycling, size: 80, color: Colors.green),
+              const SizedBox(height: 10),
               const Text(
-                "Login to your account",
-                style: TextStyle(fontSize: 18),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _phoneController,
-                keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
-                  labelText: "Mobile Number",
-                  prefixText: "+91 ",
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.phone),
+                "Haritha Karma Sena",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
                 ),
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _sendOTP,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: const Text(
-                  "Send OTP",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
+              const SizedBox(height: 40),
 
-            // --- OTP INPUT SECTION ---
-            if (_isOTPSent) ...[
-              const Text(
-                "Enter the 6-digit code",
-                style: TextStyle(fontSize: 18),
-              ),
-              const SizedBox(height: 20),
-              PinFieldAutoFill(
-                codeLength: 6,
-                onCodeChanged: (code) {
-                  if (code != null && code.length == 6) {
-                    setState(() => _otpCode = code);
-                    // Navigate to Dashboard
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AdminDashboard(),
-                      ),
-                    );
-                  }
-                },
-                decoration: BoxLooseDecoration(
-                  strokeColorBuilder: FixedColorBuilder(Colors.green),
+              if (!_isOTPSent) ...[
+                const Text(
+                  "Login to your account",
+                  style: TextStyle(fontSize: 18),
                 ),
-              ),
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () => setState(() => _isOTPSent = false),
-                child: const Text("Change Phone Number"),
-              ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _phoneController,
+                  keyboardType: TextInputType.phone,
+                  decoration: const InputDecoration(
+                    labelText: "Mobile Number",
+                    prefixText: "+91 ",
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.phone),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _sendOTP,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  child: const Text(
+                    "Send OTP",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+
+              if (_isOTPSent) ...[
+                const Text(
+                  "Enter the 6-digit code",
+                  style: TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 20),
+                PinFieldAutoFill(
+                  codeLength: 6,
+                  // This property must be inside the PinFieldAutoFill constructor
+                  onCodeChanged: (code) {
+                    if (code != null && code.length == 6) {
+                      setState(() => _otpCode = code);
+
+                      // --- LOGIC: Redirect based on registration status ---
+                      // We simulate a check. Change this to true to test the Dashboard.
+                      bool isRegisteredAdmin = false;
+
+                      if (isRegisteredAdmin) {
+                        // User exists -> Go to Dashboard
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AdminDashboard(),
+                          ),
+                        );
+                      } else {
+                        // User is new -> Go to Worker Registration
+                        // Passing the verified phone number automatically
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HKSRegistrationPage(
+                              phoneNumber: _phoneController.text,
+                            ),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  // Visual styling for the OTP boxes
+                  decoration: BoxLooseDecoration(
+                    strokeColorBuilder: FixedColorBuilder(Colors.green),
+                    gapSpace: 10,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: () => setState(() => _isOTPSent = false),
+                  child: const Text("Change Phone Number"),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

@@ -18,6 +18,22 @@ class AdminDashboard extends StatelessWidget {
         backgroundColor: Colors.green[700],
         elevation: 0,
         actions: [
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RegisterUserPage(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.add_home),
+            label: const Text("Register New House"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              minimumSize: const Size(double.infinity, 50),
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () => Navigator.push(
