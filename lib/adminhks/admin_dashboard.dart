@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// Import your other files here
 import 'register_user.dart';
 import 'sent_notification.dart';
 import 'view_status.dart';

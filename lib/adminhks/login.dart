@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+// IMPORTANT: Import your dashboard file here
+import 'admin_dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,11 +15,9 @@ class _LoginPageState extends State<LoginPage> {
   bool _isOTPSent = false;
   String _otpCode = "";
 
-  // 1. Function to simulate sending OTP
   void _sendOTP() async {
     if (_phoneController.text.length == 10) {
       setState(() => _isOTPSent = true);
-      // This tells the phone to start "listening" for the incoming SMS
       await SmsAutoFill().listenForCode();
       ScaffoldMessenger.of(
         context,
@@ -31,24 +31,13 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    SmsAutoFill().unregisterListener(); // Clean up the listener
+    SmsAutoFill().unregisterListener();
+    _phoneController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    PinFieldAutoFill(
-      codeLength: 6,
-      onCodeChanged: (code) {
-        setState(() {
-          _otpCode = code ?? "";
-        });
-
-        if (code != null && code.length == 6) {
-          print("OTP entered: $code");
-        }
-      },
-    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -68,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 40),
 
-            // Phone Number Input
+            // --- PHONE INPUT SECTION ---
             if (!_isOTPSent) ...[
               const Text(
                 "Login to your account",
@@ -99,20 +88,25 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ],
 
-            // OTP Input (Visible after Send OTP is clicked)
+            // --- OTP INPUT SECTION ---
             if (_isOTPSent) ...[
               const Text(
                 "Enter the 6-digit code",
                 style: TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 20),
-              // THE MAGIC WIDGET: It fills automatically when SMS arrives!
               PinFieldAutoFill(
                 codeLength: 6,
                 onCodeChanged: (code) {
-                  if (code!.length == 6) {
-                    _otpCode = code;
-                    // Logic to verify code and check ROLE (Admin/User) goes here
+                  if (code != null && code.length == 6) {
+                    setState(() => _otpCode = code);
+                    // Navigate to Dashboard
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminDashboard(),
+                      ),
+                    );
                   }
                 },
                 decoration: BoxLooseDecoration(
