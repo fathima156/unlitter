@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MaterialApp(home: HKSRegistrationPage()));
+// 1. FIX: The main function needs a dummy phone number to run standalone
+void main() => runApp(
+  const MaterialApp(home: HKSRegistrationPage(phoneNumber: "9876543210")),
+);
 
 class HKSRegistrationPage extends StatefulWidget {
-  const HKSRegistrationPage({super.key});
+  final String phoneNumber;
+  const HKSRegistrationPage({super.key, required this.phoneNumber});
 
   @override
   State<HKSRegistrationPage> createState() => _HKSRegistrationPageState();
 }
 
 class _HKSRegistrationPageState extends State<HKSRegistrationPage> {
+  // 2. FIX: You must define _formKey here so the Form widget can find it
   final _formKey = GlobalKey<FormState>();
 
   // Data for Dropdowns
@@ -30,11 +35,28 @@ class _HKSRegistrationPageState extends State<HKSRegistrationPage> {
   String? selectedLocation;
   String? selectedVehicleType;
 
-  // Controllers to grab text data
+  // Controllers
+  late TextEditingController phoneController;
   final nameController = TextEditingController();
-  final phoneController = TextEditingController();
   final vehicleNoController = TextEditingController();
   final aadhaarController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize phone from the passed widget data
+    phoneController = TextEditingController(text: widget.phoneNumber);
+  }
+
+  @override
+  void dispose() {
+    // Clean up to save memory
+    nameController.dispose();
+    phoneController.dispose();
+    vehicleNoController.dispose();
+    aadhaarController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +68,10 @@ class _HKSRegistrationPageState extends State<HKSRegistrationPage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
-          key: _formKey,
+          key: _formKey, // This now works because we defined _formKey above
           child: Column(
             children: [
-              // 1. Admin Type (Panchayat or Municipality)
+              // Admin Type Dropdown
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Select Type',
@@ -64,105 +86,38 @@ class _HKSRegistrationPageState extends State<HKSRegistrationPage> {
                 onChanged: (val) {
                   setState(() {
                     selectedAdminType = val;
-                    selectedLocation = null; // Reset location when type changes
+                    selectedLocation = null;
                   });
                 },
-                validator: (val) => val == null ? 'Please select a type' : null,
+                validator: (val) => val == null ? 'Required' : null,
               ),
 
               const SizedBox(height: 15),
 
-              // 2. Specific Location (Dependent Dropdown)
-              DropdownButtonFormField<String>(
+              // Mobile Number (Read-only)
+              TextFormField(
+                controller: phoneController,
+                readOnly: true,
                 decoration: const InputDecoration(
-                  labelText: 'Select Panchayat/Municipality',
-                  prefixIcon: Icon(Icons.location_on),
+                  labelText: 'Verified Mobile',
+                  prefixIcon: Icon(Icons.verified, color: Colors.green),
                 ),
-                value: selectedLocation,
-                items: (selectedAdminType == null)
-                    ? []
-                    : locations[selectedAdminType]!
-                          .map(
-                            (loc) =>
-                                DropdownMenuItem(value: loc, child: Text(loc)),
-                          )
-                          .toList(),
-                onChanged: (val) => setState(() => selectedLocation = val),
-                validator: (val) =>
-                    val == null ? 'Please select a location' : null,
               ),
 
               const SizedBox(height: 15),
 
-              // 3. Name
+              // Name Field
               TextFormField(
                 controller: nameController,
                 decoration: const InputDecoration(
                   labelText: 'Worker Name',
                   prefixIcon: Icon(Icons.person),
                 ),
-                validator: (val) => val!.isEmpty ? 'Enter full name' : null,
-              ),
-
-              const SizedBox(height: 15),
-
-              // 4. Mobile Number
-              TextFormField(
-                controller: phoneController,
-                keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
-                  labelText: 'Mobile Number',
-                  prefixIcon: Icon(Icons.phone),
-                ),
-                validator: (val) =>
-                    val!.length != 10 ? 'Enter valid 10-digit number' : null,
-              ),
-
-              const SizedBox(height: 15),
-
-              // 5. Vehicle Type Dropdown
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'Vehicle Type',
-                  prefixIcon: Icon(Icons.local_shipping),
-                ),
-                items: vehicleTypes
-                    .map((v) => DropdownMenuItem(value: v, child: Text(v)))
-                    .toList(),
-                onChanged: (val) => setState(() => selectedVehicleType = val),
-                validator: (val) => val == null ? 'Select vehicle type' : null,
-              ),
-
-              const SizedBox(height: 15),
-
-              // 6. Vehicle Number
-              TextFormField(
-                controller: vehicleNoController,
-                decoration: const InputDecoration(
-                  labelText: 'Vehicle Number',
-                  hintText: 'KL-10-XX-0000',
-                ),
-                validator: (val) =>
-                    val!.isEmpty ? 'Enter vehicle number' : null,
-              ),
-
-              const SizedBox(height: 15),
-
-              // 7. Aadhaar Number
-              TextFormField(
-                controller: aadhaarController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Aadhaar Number',
-                  prefixIcon: Icon(Icons.badge),
-                ),
-                validator: (val) =>
-                    val!.length != 12 ? 'Aadhaar must be 12 digits' : null,
+                validator: (val) => val!.isEmpty ? 'Enter name' : null,
               ),
 
               const SizedBox(height: 30),
 
-              // SUBMIT BUTTON
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
@@ -170,15 +125,12 @@ class _HKSRegistrationPageState extends State<HKSRegistrationPage> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // Logic to send data to your Backend/Database
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Registering Worker...')),
-                    );
+                    // Logic to save
                   }
                 },
                 child: const Text(
                   'Register Worker',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],

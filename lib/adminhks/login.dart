@@ -105,12 +105,10 @@ class _LoginPageState extends State<LoginPage> {
                     if (code != null && code.length == 6) {
                       setState(() => _otpCode = code);
 
-                      // --- LOGIC: Redirect based on registration status ---
-                      // We simulate a check. Change this to true to test the Dashboard.
-                      bool isRegisteredAdmin = false;
+                      bool isRegisteredAdmin =
+                          false; // Set to true to test dashboard
 
                       if (isRegisteredAdmin) {
-                        // User exists -> Go to Dashboard
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -118,8 +116,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         );
                       } else {
-                        // User is new -> Go to Worker Registration
-                        // Passing the verified phone number automatically
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -128,9 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         );
-                      }
-                    }
-                  },
+                      } // Closes else
+                    } // Closes if (code.length == 6)
+                  }, // Closes onCodeChanged
                   // Visual styling for the OTP boxes
                   decoration: BoxLooseDecoration(
                     strokeColorBuilder: FixedColorBuilder(Colors.green),
