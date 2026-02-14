@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+// Import your other files here
+import 'register_user.dart';
+import 'sent_notification.dart';
+import 'view_status.dart';
+import 'concern_page.dart';
+import 'settings.dart';
+import 'admin_profile.dart';
 
 class AdminDashboard extends StatelessWidget {
   const AdminDashboard({super.key});
@@ -6,104 +13,131 @@ class AdminDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
-      // 1. TOP NAVIGATION BAR (Account & Settings)
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: const Text("HKS Admin Console"),
+        title: const Text("HKS Admin Panel"),
         backgroundColor: Colors.green[700],
-        elevation: 2,
+        elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () => _showSettings(context),
-          ),
-          GestureDetector(
-            onTap: () => _showAccountProfile(context),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(Icons.person, color: Colors.green),
-              ),
+            icon: const Icon(Icons.settings),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SettingsPage()),
             ),
           ),
         ],
       ),
+      body: Column(
+        children: [
+          // Top Profile Card (Connects to admin_profile.dart)
+          _buildHeader(context),
 
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Operational Menus",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-
-            // 2. THE MENU GRID
-            GridView.count(
-              shrinkWrap:
-                  true, // Crucial for using Grid inside SingleChildScrollView
-              physics: const NeverScrollableScrollPhysics(),
+          Expanded(
+            child: GridView.count(
+              padding: const EdgeInsets.all(20),
               crossAxisCount: 2,
               crossAxisSpacing: 15,
               mainAxisSpacing: 15,
-              childAspectRatio: 1.1,
               children: [
-                _buildMenuCard(
-                  context,
-                  "Notifications",
-                  "Enter alerts",
-                  Icons.send_rounded,
-                  Colors.blue,
-                  const SentNotificationPage(),
-                ),
-                _buildMenuCard(
+                _menuCard(
                   context,
                   "Register User",
-                  "New household",
-                  Icons.person_add_alt_1,
-                  Colors.orange,
+                  Icons.person_add,
+                  Colors.blue,
                   const RegisterUserPage(),
                 ),
-                _buildMenuCard(
+                _menuCard(
+                  context,
+                  "Notifications",
+                  Icons.campaign,
+                  Colors.orange,
+                  const SentNotificationPage(),
+                ),
+                _menuCard(
                   context,
                   "House Status",
-                  "View / Add",
-                  Icons.fact_check_outlined,
+                  Icons.fact_check,
                   Colors.green,
                   const HouseFinancePage(),
                 ),
-                _buildMenuCard(
+                _menuCard(
                   context,
-                  "Concerns",
-                  "Poor segregation",
-                  Icons.warning_amber_rounded,
-                  Colors.redAccent,
+                  "Log Concern",
+                  Icons.report_problem,
+                  Colors.red,
                   const AdminConcernsPage(),
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  // 3. REUSABLE MENU CARD COMPONENT
-  Widget _buildMenuCard(
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        color: Colors.green[700],
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+      ),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AdminProfilePage()),
+            ),
+            child: const CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.white,
+              child: Icon(
+                Icons.admin_panel_settings,
+                color: Colors.green,
+                size: 35,
+              ),
+            ),
+          ),
+          const SizedBox(width: 15),
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Secretary, HKS",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "Admin ID: #9921",
+                style: TextStyle(color: Colors.white70, fontSize: 14),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _menuCard(
     BuildContext context,
     String title,
-    String sub,
     IconData icon,
     Color color,
-    Widget page,
+    Widget target,
   ) {
     return InkWell(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => page),
+        MaterialPageRoute(builder: (context) => target),
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -120,59 +154,12 @@ class AdminDashboard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: color, size: 30),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 4),
-            Text(sub, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+            Icon(icon, size: 40, color: color),
+            const SizedBox(height: 10),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
       ),
     );
-  }
-
-  // 4. POPUP FOR ACCOUNT
-  void _showAccountProfile(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-      ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CircleAvatar(radius: 40, child: Icon(Icons.person, size: 40)),
-            const SizedBox(height: 15),
-            const Text(
-              "Panchayat Secretary",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const Text("Admin ID: HKS-9921"),
-            const Divider(height: 40),
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text("Logout"),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showSettings(BuildContext context) {
-    // Navigate to settings logic
   }
 }
