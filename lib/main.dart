@@ -1,55 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:unlitter/adminhks/register_user.dart';
-//import 'package:firebase_core/firebase_core.dart';
-// import 'adminhks/register_admin.dart'; // We will link your forms here later
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // We'll initialize Firebase here once you set up your project 📂
-  // await Firebase.initializeApp();
-  runApp(const HKSApp());
+// Admin/Worker Folder Imports
+import 'adminhks/login.dart'; // Admin Login
+import 'adminhks/admin_dashboard.dart'; // Admin Dashboard
+import 'adminhks/register_admin.dart'; // Admin Registration
+
+// User/Household Folder Imports
+import 'userhks/login_user.dart'; // User Login
+import 'userhks/user_dashboard.dart'; // User Dashboard
+import 'userhks/register_user.dart'; // User Registration
+
+void main() {
+  runApp(const UnlitterApp());
 }
 
-class HKSApp extends StatelessWidget {
-  const HKSApp({super.key});
+class UnlitterApp extends StatelessWidget {
+  const UnlitterApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Haritha Karma Sena',
-      theme: ThemeData(primarySwatch: Colors.green, useMaterial3: true),
-      home: const AuthWrapper(), // This decides the first screen
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        useMaterial3: true,
+      ),
+
+      // 1. SET THE STARTING PAGE
+      // Change this to LoginUserPage() if you want the app to start for Residents
+      home: const LoginPage(),
+
+      // 2. DEFINE FIXED ROUTES
+      // Only pages that DON'T require extra data (like phone numbers) go here
+      routes: {
+        // Admin Routes
+        '/adminLogin': (context) => const LoginPage(),
+        '/adminDashboard': (context) => const AdminDashboard(),
+
+        // User Routes
+        '/userLogin': (context) => const UserLoginPage(),
+        '/userDashboard': (context) => const UserDashboard(),
+      },
     );
   }
-}
-
-class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({super.key});
-  @override
-  Widget build(BuildContext context) {
-    // While testing, just return the page you are working on!
-    return const RegisterUserPage();
-  }
-}
-
-class PlaceholderLogin extends StatelessWidget {
-  const PlaceholderLogin({super.key});
-  @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: Text('Login Screen Placeholder')));
-}
-
-class AdminDashboard extends StatelessWidget {
-  const AdminDashboard({super.key});
-  @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: Text('Admin Dashboard')));
-}
-
-class UserDashboard extends StatelessWidget {
-  const UserDashboard({super.key});
-  @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: Text('User Dashboard')));
 }

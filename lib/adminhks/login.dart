@@ -124,10 +124,10 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         );
-                      } // Closes else
-                    } // Closes if (code.length == 6)
-                  }, // Closes onCodeChanged
-                  // Visual styling for the OTP boxes
+                      }
+                    }
+                  },
+                  //otp style
                   decoration: BoxLooseDecoration(
                     strokeColorBuilder: FixedColorBuilder(Colors.green),
                     gapSpace: 10,
