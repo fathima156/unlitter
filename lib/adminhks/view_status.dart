@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+// Ensure this import matches your actual file path for AddHouseDetailsPage
+import 'add_status_details.dart';
 
 class HouseFinancePage extends StatefulWidget {
   const HouseFinancePage({super.key});
@@ -57,16 +59,9 @@ class _HouseFinancePageState extends State<HouseFinancePage> {
     },
   ];
 
-  void _addNewDetails() {
-    // Logic to open a dialog or navigate to your 'Register User' or 'Add Payment' form
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Redirecting to Entry Form...")),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Filter Logic
+    // Filter Logic: Filters the list based on Ward and Month
     List<Map<String, dynamic>> filteredList = _allData.where((item) {
       bool wardMatch = _selectedWard == 'All' || item['ward'] == _selectedWard;
       bool monthMatch = item['month'] == _selectedMonth;
@@ -80,7 +75,7 @@ class _HouseFinancePageState extends State<HouseFinancePage> {
       ),
       body: Column(
         children: [
-          // FILTER SECTION
+          // --- FILTER SECTION ---
           Container(
             padding: const EdgeInsets.all(10),
             color: Colors.green[50],
@@ -111,7 +106,7 @@ class _HouseFinancePageState extends State<HouseFinancePage> {
             ),
           ),
 
-          // LIST SECTION
+          // --- LIST SECTION ---
           Expanded(
             child: filteredList.isEmpty
                 ? const Center(
@@ -154,11 +149,19 @@ class _HouseFinancePageState extends State<HouseFinancePage> {
           ),
         ],
       ),
+      // --- ADD NEW BUTTON ---
       floatingActionButton: FloatingActionButton(
-        onPressed: _addNewDetails,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddHouseDetailsPage(),
+            ),
+          );
+        },
         backgroundColor: Colors.green,
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
-  }
-}
+  } // End of build method
+} // End of _HouseFinancePageState class
