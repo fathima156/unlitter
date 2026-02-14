@@ -178,7 +178,12 @@ class UserDashboard extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuTile(IconData icon, String title, String sub) {
+  Widget _buildMenuTile(
+    IconData icon,
+    String title,
+    String sub, {
+    VoidCallback? onTap,
+  }) {
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -187,7 +192,7 @@ class UserDashboard extends StatelessWidget {
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(sub),
         trailing: const Icon(Icons.chevron_right),
-        onTap: () {},
+        onTap: onTap,
       ),
     );
   }
